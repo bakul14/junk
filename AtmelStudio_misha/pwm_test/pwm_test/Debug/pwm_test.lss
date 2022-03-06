@@ -1,0 +1,91 @@
+
+pwm_test.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000058  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .comment      00000030  00000000  00000000  000000ac  2**0
+                  CONTENTS, READONLY
+  2 .debug_aranges 00000020  00000000  00000000  000000dc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  3 .debug_info   0000007b  00000000  00000000  000000fc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_abbrev 00000044  00000000  00000000  00000177  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_line   00000043  00000000  00000000  000001bb  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_frame  00000024  00000000  00000000  00000200  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_str    00000131  00000000  00000000  00000224  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_ranges 00000010  00000000  00000000  00000355  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	12 c0       	rjmp	.+36     	; 0x26 <__ctors_end>
+   2:	19 c0       	rjmp	.+50     	; 0x36 <__bad_interrupt>
+   4:	18 c0       	rjmp	.+48     	; 0x36 <__bad_interrupt>
+   6:	17 c0       	rjmp	.+46     	; 0x36 <__bad_interrupt>
+   8:	16 c0       	rjmp	.+44     	; 0x36 <__bad_interrupt>
+   a:	15 c0       	rjmp	.+42     	; 0x36 <__bad_interrupt>
+   c:	14 c0       	rjmp	.+40     	; 0x36 <__bad_interrupt>
+   e:	13 c0       	rjmp	.+38     	; 0x36 <__bad_interrupt>
+  10:	12 c0       	rjmp	.+36     	; 0x36 <__bad_interrupt>
+  12:	11 c0       	rjmp	.+34     	; 0x36 <__bad_interrupt>
+  14:	10 c0       	rjmp	.+32     	; 0x36 <__bad_interrupt>
+  16:	0f c0       	rjmp	.+30     	; 0x36 <__bad_interrupt>
+  18:	0e c0       	rjmp	.+28     	; 0x36 <__bad_interrupt>
+  1a:	0d c0       	rjmp	.+26     	; 0x36 <__bad_interrupt>
+  1c:	0c c0       	rjmp	.+24     	; 0x36 <__bad_interrupt>
+  1e:	0b c0       	rjmp	.+22     	; 0x36 <__bad_interrupt>
+  20:	0a c0       	rjmp	.+20     	; 0x36 <__bad_interrupt>
+  22:	09 c0       	rjmp	.+18     	; 0x36 <__bad_interrupt>
+  24:	08 c0       	rjmp	.+16     	; 0x36 <__bad_interrupt>
+
+00000026 <__ctors_end>:
+  26:	11 24       	eor	r1, r1
+  28:	1f be       	out	0x3f, r1	; 63
+  2a:	cf e5       	ldi	r28, 0x5F	; 95
+  2c:	d4 e0       	ldi	r29, 0x04	; 4
+  2e:	de bf       	out	0x3e, r29	; 62
+  30:	cd bf       	out	0x3d, r28	; 61
+  32:	02 d0       	rcall	.+4      	; 0x38 <main>
+  34:	0f c0       	rjmp	.+30     	; 0x54 <_exit>
+
+00000036 <__bad_interrupt>:
+  36:	e4 cf       	rjmp	.-56     	; 0x0 <__vectors>
+
+00000038 <main>:
+#include <avr/io.h>
+
+int main(void)
+{
+	
+	TCCR1A = 0b10000010;
+  38:	82 e8       	ldi	r24, 0x82	; 130
+  3a:	8f bd       	out	0x2f, r24	; 47
+	TCCR1B = 0b00010001;
+  3c:	81 e1       	ldi	r24, 0x11	; 17
+  3e:	8e bd       	out	0x2e, r24	; 46
+	ICR1 = 20000;
+  40:	80 e2       	ldi	r24, 0x20	; 32
+  42:	9e e4       	ldi	r25, 0x4E	; 78
+  44:	97 bd       	out	0x27, r25	; 39
+  46:	86 bd       	out	0x26, r24	; 38
+	OCR1A = 2000;
+  48:	80 ed       	ldi	r24, 0xD0	; 208
+  4a:	97 e0       	ldi	r25, 0x07	; 7
+  4c:	9b bd       	out	0x2b, r25	; 43
+  4e:	8a bd       	out	0x2a, r24	; 42
+	DDRB |= 1<<1;
+  50:	b9 9a       	sbi	0x17, 1	; 23
+  52:	ff cf       	rjmp	.-2      	; 0x52 <__SREG__+0x13>
+
+00000054 <_exit>:
+  54:	f8 94       	cli
+
+00000056 <__stop_program>:
+  56:	ff cf       	rjmp	.-2      	; 0x56 <__stop_program>

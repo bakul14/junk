@@ -1,0 +1,177 @@
+
+tiny13.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000000c4  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  00000138  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000004  00800060  00800060  00000138  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  00000138  2**0
+                  CONTENTS, READONLY
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000168  2**2
+                  CONTENTS, READONLY
+  5 .debug_aranges 00000020  00000000  00000000  000001a4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_info   000003a4  00000000  00000000  000001c4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_abbrev 0000031d  00000000  00000000  00000568  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_line   0000021d  00000000  00000000  00000885  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_frame  00000024  00000000  00000000  00000aa4  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    00000227  00000000  00000000  00000ac8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000010  00000000  00000000  00000cef  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	09 c0       	rjmp	.+18     	; 0x14 <__ctors_end>
+   2:	16 c0       	rjmp	.+44     	; 0x30 <__bad_interrupt>
+   4:	15 c0       	rjmp	.+42     	; 0x30 <__bad_interrupt>
+   6:	14 c0       	rjmp	.+40     	; 0x30 <__bad_interrupt>
+   8:	13 c0       	rjmp	.+38     	; 0x30 <__bad_interrupt>
+   a:	12 c0       	rjmp	.+36     	; 0x30 <__bad_interrupt>
+   c:	11 c0       	rjmp	.+34     	; 0x30 <__bad_interrupt>
+   e:	10 c0       	rjmp	.+32     	; 0x30 <__bad_interrupt>
+  10:	0f c0       	rjmp	.+30     	; 0x30 <__bad_interrupt>
+  12:	0e c0       	rjmp	.+28     	; 0x30 <__bad_interrupt>
+
+00000014 <__ctors_end>:
+  14:	11 24       	eor	r1, r1
+  16:	1f be       	out	0x3f, r1	; 63
+  18:	cf e9       	ldi	r28, 0x9F	; 159
+  1a:	cd bf       	out	0x3d, r28	; 61
+
+0000001c <__do_clear_bss>:
+  1c:	20 e0       	ldi	r18, 0x00	; 0
+  1e:	a0 e6       	ldi	r26, 0x60	; 96
+  20:	b0 e0       	ldi	r27, 0x00	; 0
+  22:	01 c0       	rjmp	.+2      	; 0x26 <.do_clear_bss_start>
+
+00000024 <.do_clear_bss_loop>:
+  24:	1d 92       	st	X+, r1
+
+00000026 <.do_clear_bss_start>:
+  26:	a4 36       	cpi	r26, 0x64	; 100
+  28:	b2 07       	cpc	r27, r18
+  2a:	e1 f7       	brne	.-8      	; 0x24 <.do_clear_bss_loop>
+  2c:	02 d0       	rcall	.+4      	; 0x32 <main>
+  2e:	48 c0       	rjmp	.+144    	; 0xc0 <_exit>
+
+00000030 <__bad_interrupt>:
+  30:	e7 cf       	rjmp	.-50     	; 0x0 <__vectors>
+
+00000032 <main>:
+uint8_t a = 0;
+uint8_t b = 0;
+uint8_t c = 0;
+int main(void)
+{
+	TCCR0B |= (1<<0);
+  32:	83 b7       	in	r24, 0x33	; 51
+  34:	81 60       	ori	r24, 0x01	; 1
+  36:	83 bf       	out	0x33, r24	; 51
+	TCCR0B |= (0<<0) | (0<<0);
+  38:	83 b7       	in	r24, 0x33	; 51
+  3a:	83 bf       	out	0x33, r24	; 51
+	TCNT0 = 0;
+  3c:	12 be       	out	0x32, r1	; 50
+	while (1)
+	{
+		if ((PINB |= (1<<0)) | (PINB |= (1<<1)) | (PINB |= (1<<2)) & (i == 0)) { 
+			TCNT0 = 0;
+			 i = 1;
+  3e:	31 e0       	ldi	r19, 0x01	; 1
+	TCCR0B |= (1<<0);
+	TCCR0B |= (0<<0) | (0<<0);
+	TCNT0 = 0;
+	while (1)
+	{
+		if ((PINB |= (1<<0)) | (PINB |= (1<<1)) | (PINB |= (1<<2)) & (i == 0)) { 
+  40:	b0 9a       	sbi	0x16, 0	; 22
+  42:	b1 9a       	sbi	0x16, 1	; 22
+  44:	b2 9a       	sbi	0x16, 2	; 22
+			TCNT0 = 0;
+  46:	12 be       	out	0x32, r1	; 50
+			 i = 1;
+  48:	30 93 63 00 	sts	0x0063, r19	; 0x800063 <i>
+		 }
+		
+		if (PINB |= (0<<0)) a = TCNT0;
+  4c:	86 b3       	in	r24, 0x16	; 22
+  4e:	86 bb       	out	0x16, r24	; 22
+  50:	88 23       	and	r24, r24
+  52:	19 f0       	breq	.+6      	; 0x5a <__SREG__+0x1b>
+  54:	82 b7       	in	r24, 0x32	; 50
+  56:	80 93 62 00 	sts	0x0062, r24	; 0x800062 <a>
+		if (PINB |= (0<<1)) b = TCNT0;
+  5a:	86 b3       	in	r24, 0x16	; 22
+  5c:	86 bb       	out	0x16, r24	; 22
+  5e:	88 23       	and	r24, r24
+  60:	19 f0       	breq	.+6      	; 0x68 <__SREG__+0x29>
+  62:	82 b7       	in	r24, 0x32	; 50
+  64:	80 93 61 00 	sts	0x0061, r24	; 0x800061 <b>
+		if (PINB |= (0<<2)) c = TCNT0;
+  68:	86 b3       	in	r24, 0x16	; 22
+  6a:	86 bb       	out	0x16, r24	; 22
+  6c:	88 23       	and	r24, r24
+  6e:	19 f0       	breq	.+6      	; 0x76 <__SREG__+0x37>
+  70:	82 b7       	in	r24, 0x32	; 50
+  72:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <_edata>
+
+        if ((PINB |= (0<<0)) & (PINB |= (0<<1)) & (PINB |= (0<<2))) { 
+  76:	26 b3       	in	r18, 0x16	; 22
+  78:	26 bb       	out	0x16, r18	; 22
+  7a:	96 b3       	in	r25, 0x16	; 22
+  7c:	96 bb       	out	0x16, r25	; 22
+  7e:	86 b3       	in	r24, 0x16	; 22
+  80:	86 bb       	out	0x16, r24	; 22
+  82:	92 23       	and	r25, r18
+  84:	89 23       	and	r24, r25
+  86:	19 f0       	breq	.+6      	; 0x8e <__SREG__+0x4f>
+			TCNT0 = 0; 
+  88:	12 be       	out	0x32, r1	; 50
+			i = 0;
+  8a:	10 92 63 00 	sts	0x0063, r1	; 0x800063 <i>
+		 }
+		
+		if (a>45) PORTB |= (1<<3);
+  8e:	80 91 62 00 	lds	r24, 0x0062	; 0x800062 <a>
+  92:	8e 32       	cpi	r24, 0x2E	; 46
+  94:	10 f0       	brcs	.+4      	; 0x9a <__SREG__+0x5b>
+  96:	c3 9a       	sbi	0x18, 3	; 24
+  98:	02 c0       	rjmp	.+4      	; 0x9e <__SREG__+0x5f>
+		else PORTB |= (0<<3);
+  9a:	88 b3       	in	r24, 0x18	; 24
+  9c:	88 bb       	out	0x18, r24	; 24
+		if (b>45) PORTB |= (1<<4);
+  9e:	80 91 61 00 	lds	r24, 0x0061	; 0x800061 <b>
+  a2:	8e 32       	cpi	r24, 0x2E	; 46
+  a4:	10 f0       	brcs	.+4      	; 0xaa <__stack+0xb>
+  a6:	c4 9a       	sbi	0x18, 4	; 24
+  a8:	02 c0       	rjmp	.+4      	; 0xae <__stack+0xf>
+		else PORTB |= (0<<4);
+  aa:	88 b3       	in	r24, 0x18	; 24
+  ac:	88 bb       	out	0x18, r24	; 24
+		if (c>45) PORTB |= (1<<5);
+  ae:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <_edata>
+  b2:	8e 32       	cpi	r24, 0x2E	; 46
+  b4:	10 f0       	brcs	.+4      	; 0xba <__stack+0x1b>
+  b6:	c5 9a       	sbi	0x18, 5	; 24
+  b8:	c3 cf       	rjmp	.-122    	; 0x40 <__SREG__+0x1>
+		else PORTB |= (0<<5);
+  ba:	88 b3       	in	r24, 0x18	; 24
+  bc:	88 bb       	out	0x18, r24	; 24
+  be:	c0 cf       	rjmp	.-128    	; 0x40 <__SREG__+0x1>
+
+000000c0 <_exit>:
+  c0:	f8 94       	cli
+
+000000c2 <__stop_program>:
+  c2:	ff cf       	rjmp	.-2      	; 0xc2 <__stop_program>

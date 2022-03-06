@@ -1,0 +1,489 @@
+
+controller.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000002c6  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  0000033a  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          0000001b  00800060  00800060  0000033a  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  0000033a  2**0
+                  CONTENTS, READONLY
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  0000036c  2**2
+                  CONTENTS, READONLY
+  5 .debug_aranges 00000020  00000000  00000000  000003a8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_info   000006f9  00000000  00000000  000003c8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_abbrev 000004b3  00000000  00000000  00000ac1  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_line   00000422  00000000  00000000  00000f74  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_frame  00000024  00000000  00000000  00001398  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    000003ec  00000000  00000000  000013bc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000010  00000000  00000000  000017a8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	12 c0       	rjmp	.+36     	; 0x26 <__ctors_end>
+   2:	21 c0       	rjmp	.+66     	; 0x46 <__bad_interrupt>
+   4:	20 c0       	rjmp	.+64     	; 0x46 <__bad_interrupt>
+   6:	1f c0       	rjmp	.+62     	; 0x46 <__bad_interrupt>
+   8:	1e c0       	rjmp	.+60     	; 0x46 <__bad_interrupt>
+   a:	1d c0       	rjmp	.+58     	; 0x46 <__bad_interrupt>
+   c:	1c c0       	rjmp	.+56     	; 0x46 <__bad_interrupt>
+   e:	1b c0       	rjmp	.+54     	; 0x46 <__bad_interrupt>
+  10:	1a c0       	rjmp	.+52     	; 0x46 <__bad_interrupt>
+  12:	19 c0       	rjmp	.+50     	; 0x46 <__bad_interrupt>
+  14:	18 c0       	rjmp	.+48     	; 0x46 <__bad_interrupt>
+  16:	17 c0       	rjmp	.+46     	; 0x46 <__bad_interrupt>
+  18:	16 c0       	rjmp	.+44     	; 0x46 <__bad_interrupt>
+  1a:	15 c0       	rjmp	.+42     	; 0x46 <__bad_interrupt>
+  1c:	14 c0       	rjmp	.+40     	; 0x46 <__bad_interrupt>
+  1e:	13 c0       	rjmp	.+38     	; 0x46 <__bad_interrupt>
+  20:	12 c0       	rjmp	.+36     	; 0x46 <__bad_interrupt>
+  22:	11 c0       	rjmp	.+34     	; 0x46 <__bad_interrupt>
+  24:	10 c0       	rjmp	.+32     	; 0x46 <__bad_interrupt>
+
+00000026 <__ctors_end>:
+  26:	11 24       	eor	r1, r1
+  28:	1f be       	out	0x3f, r1	; 63
+  2a:	cf e5       	ldi	r28, 0x5F	; 95
+  2c:	d4 e0       	ldi	r29, 0x04	; 4
+  2e:	de bf       	out	0x3e, r29	; 62
+  30:	cd bf       	out	0x3d, r28	; 61
+
+00000032 <__do_clear_bss>:
+  32:	20 e0       	ldi	r18, 0x00	; 0
+  34:	a0 e6       	ldi	r26, 0x60	; 96
+  36:	b0 e0       	ldi	r27, 0x00	; 0
+  38:	01 c0       	rjmp	.+2      	; 0x3c <.do_clear_bss_start>
+
+0000003a <.do_clear_bss_loop>:
+  3a:	1d 92       	st	X+, r1
+
+0000003c <.do_clear_bss_start>:
+  3c:	ab 37       	cpi	r26, 0x7B	; 123
+  3e:	b2 07       	cpc	r27, r18
+  40:	e1 f7       	brne	.-8      	; 0x3a <.do_clear_bss_loop>
+  42:	02 d0       	rcall	.+4      	; 0x48 <main>
+  44:	3e c1       	rjmp	.+636    	; 0x2c2 <_exit>
+
+00000046 <__bad_interrupt>:
+  46:	dc cf       	rjmp	.-72     	; 0x0 <__vectors>
+
+00000048 <main>:
+uint8_t pylon3_2_zero = 0;
+uint8_t pylon3_3_zero = 0;
+
+int main(void)
+{
+	DDRD = 0xff;
+  48:	8f ef       	ldi	r24, 0xFF	; 255
+  4a:	81 bb       	out	0x11, r24	; 17
+	DDRB |= (1<<0) | (0<<1) | (0<<2) | (0<<3) | (0<<4) | (0<<5);
+  4c:	b8 9a       	sbi	0x17, 0	; 23
+	DDRC = 0x00;
+  4e:	14 ba       	out	0x14, r1	; 20
+	TCCR0 = 0b00000100;
+  50:	84 e0       	ldi	r24, 0x04	; 4
+  52:	83 bf       	out	0x33, r24	; 51
+	TCNT0 = 0;
+  54:	12 be       	out	0x32, r1	; 50
+	{
+		//-------------------------------------
+		if (PINC &= 1<<3) {
+			if (flag1_1 == 0) {
+				pylon1_1_zero = TCNT0;
+				flag1_1 = 1;
+  56:	91 e0       	ldi	r25, 0x01	; 1
+	TCCR0 = 0b00000100;
+	TCNT0 = 0;
+	while (1)
+	{
+		//-------------------------------------
+		if (PINC &= 1<<3) {
+  58:	83 b3       	in	r24, 0x13	; 19
+  5a:	88 70       	andi	r24, 0x08	; 8
+  5c:	83 bb       	out	0x13, r24	; 19
+  5e:	88 23       	and	r24, r24
+  60:	51 f0       	breq	.+20     	; 0x76 <main+0x2e>
+			if (flag1_1 == 0) {
+  62:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <flag1_1>
+  66:	81 11       	cpse	r24, r1
+  68:	12 c0       	rjmp	.+36     	; 0x8e <main+0x46>
+				pylon1_1_zero = TCNT0;
+  6a:	82 b7       	in	r24, 0x32	; 50
+  6c:	80 93 68 00 	sts	0x0068, r24	; 0x800068 <pylon1_1_zero>
+				flag1_1 = 1;
+  70:	90 93 7a 00 	sts	0x007A, r25	; 0x80007a <flag1_1>
+  74:	0c c0       	rjmp	.+24     	; 0x8e <main+0x46>
+			}
+			
+		}
+		else if (flag1_1 == 1) {
+  76:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <flag1_1>
+  7a:	81 30       	cpi	r24, 0x01	; 1
+  7c:	41 f4       	brne	.+16     	; 0x8e <main+0x46>
+			pylon1_1 = TCNT0 - pylon1_1_zero;
+  7e:	82 b7       	in	r24, 0x32	; 50
+  80:	20 91 68 00 	lds	r18, 0x0068	; 0x800068 <pylon1_1_zero>
+  84:	82 1b       	sub	r24, r18
+  86:	80 93 71 00 	sts	0x0071, r24	; 0x800071 <pylon1_1>
+			flag1_1 = 0;
+  8a:	10 92 7a 00 	sts	0x007A, r1	; 0x80007a <flag1_1>
+		}
+		//-------------------------------------
+		if (PINC &= 1<<2) {
+  8e:	83 b3       	in	r24, 0x13	; 19
+  90:	84 70       	andi	r24, 0x04	; 4
+  92:	83 bb       	out	0x13, r24	; 19
+  94:	88 23       	and	r24, r24
+  96:	51 f0       	breq	.+20     	; 0xac <main+0x64>
+			if (flag1_2 == 0) {
+  98:	80 91 79 00 	lds	r24, 0x0079	; 0x800079 <flag1_2>
+  9c:	81 11       	cpse	r24, r1
+  9e:	12 c0       	rjmp	.+36     	; 0xc4 <main+0x7c>
+				pylon1_2_zero = TCNT0;
+  a0:	82 b7       	in	r24, 0x32	; 50
+  a2:	80 93 67 00 	sts	0x0067, r24	; 0x800067 <pylon1_2_zero>
+				flag1_2 = 1;
+  a6:	90 93 79 00 	sts	0x0079, r25	; 0x800079 <flag1_2>
+  aa:	0c c0       	rjmp	.+24     	; 0xc4 <main+0x7c>
+			}
+			
+		}
+		else if (flag1_2 == 1) {
+  ac:	80 91 79 00 	lds	r24, 0x0079	; 0x800079 <flag1_2>
+  b0:	81 30       	cpi	r24, 0x01	; 1
+  b2:	41 f4       	brne	.+16     	; 0xc4 <main+0x7c>
+			pylon1_2 = TCNT0 - pylon1_2_zero;
+  b4:	82 b7       	in	r24, 0x32	; 50
+  b6:	20 91 67 00 	lds	r18, 0x0067	; 0x800067 <pylon1_2_zero>
+  ba:	82 1b       	sub	r24, r18
+  bc:	80 93 70 00 	sts	0x0070, r24	; 0x800070 <pylon1_2>
+			flag1_2 = 0;
+  c0:	10 92 79 00 	sts	0x0079, r1	; 0x800079 <flag1_2>
+		}
+		//-------------------------------------
+		if (PINC &= 1<<1) {
+  c4:	83 b3       	in	r24, 0x13	; 19
+  c6:	82 70       	andi	r24, 0x02	; 2
+  c8:	83 bb       	out	0x13, r24	; 19
+  ca:	88 23       	and	r24, r24
+  cc:	51 f0       	breq	.+20     	; 0xe2 <main+0x9a>
+			if (flag1_3 == 0) {
+  ce:	80 91 78 00 	lds	r24, 0x0078	; 0x800078 <flag1_3>
+  d2:	81 11       	cpse	r24, r1
+  d4:	12 c0       	rjmp	.+36     	; 0xfa <main+0xb2>
+				pylon1_3_zero = TCNT0;
+  d6:	82 b7       	in	r24, 0x32	; 50
+  d8:	80 93 66 00 	sts	0x0066, r24	; 0x800066 <pylon1_3_zero>
+				flag1_3 = 1;
+  dc:	90 93 78 00 	sts	0x0078, r25	; 0x800078 <flag1_3>
+  e0:	0c c0       	rjmp	.+24     	; 0xfa <main+0xb2>
+			}
+			
+		}
+		else if (flag1_3 == 1) {
+  e2:	80 91 78 00 	lds	r24, 0x0078	; 0x800078 <flag1_3>
+  e6:	81 30       	cpi	r24, 0x01	; 1
+  e8:	41 f4       	brne	.+16     	; 0xfa <main+0xb2>
+			pylon1_3 = TCNT0 - pylon1_3_zero;
+  ea:	82 b7       	in	r24, 0x32	; 50
+  ec:	20 91 66 00 	lds	r18, 0x0066	; 0x800066 <pylon1_3_zero>
+  f0:	82 1b       	sub	r24, r18
+  f2:	80 93 6f 00 	sts	0x006F, r24	; 0x80006f <pylon1_3>
+			flag1_3 = 0;
+  f6:	10 92 78 00 	sts	0x0078, r1	; 0x800078 <flag1_3>
+		}
+		//-------------------------------------
+		if (PINC &= 1<<0) {
+  fa:	83 b3       	in	r24, 0x13	; 19
+  fc:	81 70       	andi	r24, 0x01	; 1
+  fe:	83 bb       	out	0x13, r24	; 19
+ 100:	88 23       	and	r24, r24
+ 102:	51 f0       	breq	.+20     	; 0x118 <main+0xd0>
+			if (flag2_1 == 0) {
+ 104:	80 91 77 00 	lds	r24, 0x0077	; 0x800077 <flag2_1>
+ 108:	81 11       	cpse	r24, r1
+ 10a:	12 c0       	rjmp	.+36     	; 0x130 <main+0xe8>
+				pylon2_1_zero = TCNT0;
+ 10c:	82 b7       	in	r24, 0x32	; 50
+ 10e:	80 93 65 00 	sts	0x0065, r24	; 0x800065 <pylon2_1_zero>
+				flag2_1 = 1;
+ 112:	90 93 77 00 	sts	0x0077, r25	; 0x800077 <flag2_1>
+ 116:	0c c0       	rjmp	.+24     	; 0x130 <main+0xe8>
+			}
+			
+		}
+		else if (flag2_1 == 1) {
+ 118:	80 91 77 00 	lds	r24, 0x0077	; 0x800077 <flag2_1>
+ 11c:	81 30       	cpi	r24, 0x01	; 1
+ 11e:	41 f4       	brne	.+16     	; 0x130 <main+0xe8>
+			pylon2_1 = TCNT0 - pylon2_1_zero;
+ 120:	82 b7       	in	r24, 0x32	; 50
+ 122:	20 91 65 00 	lds	r18, 0x0065	; 0x800065 <pylon2_1_zero>
+ 126:	82 1b       	sub	r24, r18
+ 128:	80 93 6e 00 	sts	0x006E, r24	; 0x80006e <pylon2_1>
+			flag2_1 = 0;
+ 12c:	10 92 77 00 	sts	0x0077, r1	; 0x800077 <flag2_1>
+		}
+		//-------------------------------------
+		if (PINB &= 1<<5) {
+ 130:	86 b3       	in	r24, 0x16	; 22
+ 132:	80 72       	andi	r24, 0x20	; 32
+ 134:	86 bb       	out	0x16, r24	; 22
+ 136:	88 23       	and	r24, r24
+ 138:	51 f0       	breq	.+20     	; 0x14e <main+0x106>
+			if (flag2_2 == 0) {
+ 13a:	80 91 76 00 	lds	r24, 0x0076	; 0x800076 <flag2_2>
+ 13e:	81 11       	cpse	r24, r1
+ 140:	12 c0       	rjmp	.+36     	; 0x166 <main+0x11e>
+				pylon2_2_zero = TCNT0;
+ 142:	82 b7       	in	r24, 0x32	; 50
+ 144:	80 93 64 00 	sts	0x0064, r24	; 0x800064 <pylon2_2_zero>
+				flag2_2 = 1;
+ 148:	90 93 76 00 	sts	0x0076, r25	; 0x800076 <flag2_2>
+ 14c:	0c c0       	rjmp	.+24     	; 0x166 <main+0x11e>
+			}
+			
+		}
+		else if (flag2_2 == 1) {
+ 14e:	80 91 76 00 	lds	r24, 0x0076	; 0x800076 <flag2_2>
+ 152:	81 30       	cpi	r24, 0x01	; 1
+ 154:	41 f4       	brne	.+16     	; 0x166 <main+0x11e>
+			pylon2_2 = TCNT0 - pylon2_2_zero;
+ 156:	82 b7       	in	r24, 0x32	; 50
+ 158:	20 91 64 00 	lds	r18, 0x0064	; 0x800064 <pylon2_2_zero>
+ 15c:	82 1b       	sub	r24, r18
+ 15e:	80 93 6d 00 	sts	0x006D, r24	; 0x80006d <pylon2_2>
+			flag2_2 = 0;
+ 162:	10 92 76 00 	sts	0x0076, r1	; 0x800076 <flag2_2>
+		}
+		//-------------------------------------
+		if (PINB &= 1<<4) {
+ 166:	86 b3       	in	r24, 0x16	; 22
+ 168:	80 71       	andi	r24, 0x10	; 16
+ 16a:	86 bb       	out	0x16, r24	; 22
+ 16c:	88 23       	and	r24, r24
+ 16e:	51 f0       	breq	.+20     	; 0x184 <main+0x13c>
+			if (flag2_3 == 0) {
+ 170:	80 91 75 00 	lds	r24, 0x0075	; 0x800075 <flag2_3>
+ 174:	81 11       	cpse	r24, r1
+ 176:	12 c0       	rjmp	.+36     	; 0x19c <main+0x154>
+				pylon2_3_zero = TCNT0;
+ 178:	82 b7       	in	r24, 0x32	; 50
+ 17a:	80 93 63 00 	sts	0x0063, r24	; 0x800063 <pylon2_3_zero>
+				flag2_3 = 1;
+ 17e:	90 93 75 00 	sts	0x0075, r25	; 0x800075 <flag2_3>
+ 182:	0c c0       	rjmp	.+24     	; 0x19c <main+0x154>
+			}
+			
+		}
+		else if (flag2_3 == 1) {
+ 184:	80 91 75 00 	lds	r24, 0x0075	; 0x800075 <flag2_3>
+ 188:	81 30       	cpi	r24, 0x01	; 1
+ 18a:	41 f4       	brne	.+16     	; 0x19c <main+0x154>
+			pylon2_3 = TCNT0 - pylon2_3_zero;
+ 18c:	82 b7       	in	r24, 0x32	; 50
+ 18e:	20 91 63 00 	lds	r18, 0x0063	; 0x800063 <pylon2_3_zero>
+ 192:	82 1b       	sub	r24, r18
+ 194:	80 93 6c 00 	sts	0x006C, r24	; 0x80006c <pylon2_3>
+			flag2_3 = 0;
+ 198:	10 92 75 00 	sts	0x0075, r1	; 0x800075 <flag2_3>
+		}
+		//-------------------------------------
+		if (PINB &= 1<<3) {
+ 19c:	86 b3       	in	r24, 0x16	; 22
+ 19e:	88 70       	andi	r24, 0x08	; 8
+ 1a0:	86 bb       	out	0x16, r24	; 22
+ 1a2:	88 23       	and	r24, r24
+ 1a4:	51 f0       	breq	.+20     	; 0x1ba <main+0x172>
+			if (flag3_1 == 0) {
+ 1a6:	80 91 74 00 	lds	r24, 0x0074	; 0x800074 <flag3_1>
+ 1aa:	81 11       	cpse	r24, r1
+ 1ac:	12 c0       	rjmp	.+36     	; 0x1d2 <main+0x18a>
+				pylon3_1_zero = TCNT0;
+ 1ae:	82 b7       	in	r24, 0x32	; 50
+ 1b0:	80 93 62 00 	sts	0x0062, r24	; 0x800062 <pylon3_1_zero>
+				flag3_1 = 1;
+ 1b4:	90 93 74 00 	sts	0x0074, r25	; 0x800074 <flag3_1>
+ 1b8:	0c c0       	rjmp	.+24     	; 0x1d2 <main+0x18a>
+			}
+			
+		}
+		else if (flag3_1 == 1) {
+ 1ba:	80 91 74 00 	lds	r24, 0x0074	; 0x800074 <flag3_1>
+ 1be:	81 30       	cpi	r24, 0x01	; 1
+ 1c0:	41 f4       	brne	.+16     	; 0x1d2 <main+0x18a>
+			pylon3_1 = TCNT0 - pylon3_1_zero;
+ 1c2:	82 b7       	in	r24, 0x32	; 50
+ 1c4:	20 91 62 00 	lds	r18, 0x0062	; 0x800062 <pylon3_1_zero>
+ 1c8:	82 1b       	sub	r24, r18
+ 1ca:	80 93 6b 00 	sts	0x006B, r24	; 0x80006b <pylon3_1>
+			flag3_1 = 0;
+ 1ce:	10 92 74 00 	sts	0x0074, r1	; 0x800074 <flag3_1>
+		}
+		//-------------------------------------
+		if (PINB &= 1<<2) {
+ 1d2:	86 b3       	in	r24, 0x16	; 22
+ 1d4:	84 70       	andi	r24, 0x04	; 4
+ 1d6:	86 bb       	out	0x16, r24	; 22
+ 1d8:	88 23       	and	r24, r24
+ 1da:	51 f0       	breq	.+20     	; 0x1f0 <main+0x1a8>
+			if (flag3_2 == 0) {
+ 1dc:	80 91 73 00 	lds	r24, 0x0073	; 0x800073 <flag3_2>
+ 1e0:	81 11       	cpse	r24, r1
+ 1e2:	12 c0       	rjmp	.+36     	; 0x208 <main+0x1c0>
+				pylon3_2_zero = TCNT0;
+ 1e4:	82 b7       	in	r24, 0x32	; 50
+ 1e6:	80 93 61 00 	sts	0x0061, r24	; 0x800061 <pylon3_2_zero>
+				flag3_2 = 1;
+ 1ea:	90 93 73 00 	sts	0x0073, r25	; 0x800073 <flag3_2>
+ 1ee:	0c c0       	rjmp	.+24     	; 0x208 <main+0x1c0>
+			}
+			
+		}
+		else if (flag3_2 == 1) {
+ 1f0:	80 91 73 00 	lds	r24, 0x0073	; 0x800073 <flag3_2>
+ 1f4:	81 30       	cpi	r24, 0x01	; 1
+ 1f6:	41 f4       	brne	.+16     	; 0x208 <main+0x1c0>
+			pylon3_2 = TCNT0 - pylon3_2_zero;
+ 1f8:	82 b7       	in	r24, 0x32	; 50
+ 1fa:	20 91 61 00 	lds	r18, 0x0061	; 0x800061 <pylon3_2_zero>
+ 1fe:	82 1b       	sub	r24, r18
+ 200:	80 93 6a 00 	sts	0x006A, r24	; 0x80006a <pylon3_2>
+			flag3_2 = 0;
+ 204:	10 92 73 00 	sts	0x0073, r1	; 0x800073 <flag3_2>
+		}
+		//-------------------------------------
+		if (PINB &= 1<<1) {
+ 208:	86 b3       	in	r24, 0x16	; 22
+ 20a:	82 70       	andi	r24, 0x02	; 2
+ 20c:	86 bb       	out	0x16, r24	; 22
+ 20e:	88 23       	and	r24, r24
+ 210:	51 f0       	breq	.+20     	; 0x226 <main+0x1de>
+			if (flag3_3 == 0) {
+ 212:	80 91 72 00 	lds	r24, 0x0072	; 0x800072 <flag3_3>
+ 216:	81 11       	cpse	r24, r1
+ 218:	12 c0       	rjmp	.+36     	; 0x23e <main+0x1f6>
+				pylon3_3_zero = TCNT0;
+ 21a:	82 b7       	in	r24, 0x32	; 50
+ 21c:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <_edata>
+				flag3_3 = 1;
+ 220:	90 93 72 00 	sts	0x0072, r25	; 0x800072 <flag3_3>
+ 224:	0c c0       	rjmp	.+24     	; 0x23e <main+0x1f6>
+			}
+			
+		}
+		else if (flag3_3 == 1) {
+ 226:	80 91 72 00 	lds	r24, 0x0072	; 0x800072 <flag3_3>
+ 22a:	81 30       	cpi	r24, 0x01	; 1
+ 22c:	41 f4       	brne	.+16     	; 0x23e <main+0x1f6>
+			pylon3_3 = TCNT0 - pylon3_3_zero;
+ 22e:	82 b7       	in	r24, 0x32	; 50
+ 230:	20 91 60 00 	lds	r18, 0x0060	; 0x800060 <_edata>
+ 234:	82 1b       	sub	r24, r18
+ 236:	80 93 69 00 	sts	0x0069, r24	; 0x800069 <pylon3_3>
+			flag3_3 = 0;
+ 23a:	10 92 72 00 	sts	0x0072, r1	; 0x800072 <flag3_3>
+		}
+		//-------------------------------------
+		if (pylon1_1 > 20) PORTD |= 1<<0;
+ 23e:	80 91 71 00 	lds	r24, 0x0071	; 0x800071 <pylon1_1>
+ 242:	85 31       	cpi	r24, 0x15	; 21
+ 244:	10 f0       	brcs	.+4      	; 0x24a <main+0x202>
+ 246:	90 9a       	sbi	0x12, 0	; 18
+ 248:	01 c0       	rjmp	.+2      	; 0x24c <main+0x204>
+		else PORTD &= ~(1<<0);
+ 24a:	90 98       	cbi	0x12, 0	; 18
+		//-------------------------------------
+		if (pylon1_2 > 20) PORTD |= 1<<1;
+ 24c:	80 91 70 00 	lds	r24, 0x0070	; 0x800070 <pylon1_2>
+ 250:	85 31       	cpi	r24, 0x15	; 21
+ 252:	10 f0       	brcs	.+4      	; 0x258 <main+0x210>
+ 254:	91 9a       	sbi	0x12, 1	; 18
+ 256:	01 c0       	rjmp	.+2      	; 0x25a <main+0x212>
+		else PORTD &= ~(1<<1);
+ 258:	91 98       	cbi	0x12, 1	; 18
+		//-------------------------------------
+		if (pylon1_3 > 20) PORTD |= 1<<2;
+ 25a:	80 91 6f 00 	lds	r24, 0x006F	; 0x80006f <pylon1_3>
+ 25e:	85 31       	cpi	r24, 0x15	; 21
+ 260:	10 f0       	brcs	.+4      	; 0x266 <main+0x21e>
+ 262:	92 9a       	sbi	0x12, 2	; 18
+ 264:	01 c0       	rjmp	.+2      	; 0x268 <main+0x220>
+		else PORTD &= ~(1<<2);
+ 266:	92 98       	cbi	0x12, 2	; 18
+		//-------------------------------------
+		if (pylon2_1 > 20) PORTD |= 1<<3;
+ 268:	80 91 6e 00 	lds	r24, 0x006E	; 0x80006e <pylon2_1>
+ 26c:	85 31       	cpi	r24, 0x15	; 21
+ 26e:	10 f0       	brcs	.+4      	; 0x274 <main+0x22c>
+ 270:	93 9a       	sbi	0x12, 3	; 18
+ 272:	01 c0       	rjmp	.+2      	; 0x276 <main+0x22e>
+		else PORTD &= ~(1<<3);
+ 274:	93 98       	cbi	0x12, 3	; 18
+		//-------------------------------------
+		if (pylon2_2 > 20) PORTD |= 1<<4;
+ 276:	80 91 6d 00 	lds	r24, 0x006D	; 0x80006d <pylon2_2>
+ 27a:	85 31       	cpi	r24, 0x15	; 21
+ 27c:	10 f0       	brcs	.+4      	; 0x282 <main+0x23a>
+ 27e:	94 9a       	sbi	0x12, 4	; 18
+ 280:	01 c0       	rjmp	.+2      	; 0x284 <main+0x23c>
+		else PORTD &= ~(1<<4);
+ 282:	94 98       	cbi	0x12, 4	; 18
+		//-------------------------------------
+		if (pylon2_3 > 20) PORTD |= 1<<5;
+ 284:	80 91 6c 00 	lds	r24, 0x006C	; 0x80006c <pylon2_3>
+ 288:	85 31       	cpi	r24, 0x15	; 21
+ 28a:	10 f0       	brcs	.+4      	; 0x290 <main+0x248>
+ 28c:	95 9a       	sbi	0x12, 5	; 18
+ 28e:	01 c0       	rjmp	.+2      	; 0x292 <main+0x24a>
+		else PORTD &= ~(1<<5);
+ 290:	95 98       	cbi	0x12, 5	; 18
+		//-------------------------------------
+		if (pylon3_1 > 20) PORTD |= 1<<6;
+ 292:	80 91 6b 00 	lds	r24, 0x006B	; 0x80006b <pylon3_1>
+ 296:	85 31       	cpi	r24, 0x15	; 21
+ 298:	10 f0       	brcs	.+4      	; 0x29e <main+0x256>
+ 29a:	96 9a       	sbi	0x12, 6	; 18
+ 29c:	01 c0       	rjmp	.+2      	; 0x2a0 <main+0x258>
+		else PORTD &= ~(1<<6);
+ 29e:	96 98       	cbi	0x12, 6	; 18
+		//-------------------------------------
+		if (pylon3_2 > 20) PORTD |= 1<<7;
+ 2a0:	80 91 6a 00 	lds	r24, 0x006A	; 0x80006a <pylon3_2>
+ 2a4:	85 31       	cpi	r24, 0x15	; 21
+ 2a6:	10 f0       	brcs	.+4      	; 0x2ac <main+0x264>
+ 2a8:	97 9a       	sbi	0x12, 7	; 18
+ 2aa:	01 c0       	rjmp	.+2      	; 0x2ae <main+0x266>
+		else PORTD &= ~(1<<7);
+ 2ac:	97 98       	cbi	0x12, 7	; 18
+		//-------------------------------------
+		if (pylon3_3 > 20) PORTB |= 1<<0;
+ 2ae:	80 91 69 00 	lds	r24, 0x0069	; 0x800069 <pylon3_3>
+ 2b2:	85 31       	cpi	r24, 0x15	; 21
+ 2b4:	10 f0       	brcs	.+4      	; 0x2ba <main+0x272>
+ 2b6:	c0 9a       	sbi	0x18, 0	; 24
+ 2b8:	01 c0       	rjmp	.+2      	; 0x2bc <main+0x274>
+		else PORTB &= ~(1<<0);
+ 2ba:	c0 98       	cbi	0x18, 0	; 24
+		//-------------------------------------
+		if (PINC &= 0<<3) {
+ 2bc:	83 b3       	in	r24, 0x13	; 19
+ 2be:	13 ba       	out	0x13, r1	; 19
+ 2c0:	cb ce       	rjmp	.-618    	; 0x58 <main+0x10>
+
+000002c2 <_exit>:
+ 2c2:	f8 94       	cli
+
+000002c4 <__stop_program>:
+ 2c4:	ff cf       	rjmp	.-2      	; 0x2c4 <__stop_program>

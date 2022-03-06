@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "2phase+pwm", "2phase+pwm\2phase+pwm.cppproj", "{C888D7E7-8B19-43F0-B55B-F4C8D3DC811B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C888D7E7-8B19-43F0-B55B-F4C8D3DC811B}.Debug|AVR.ActiveCfg = Debug|AVR
+		{C888D7E7-8B19-43F0-B55B-F4C8D3DC811B}.Debug|AVR.Build.0 = Debug|AVR
+		{C888D7E7-8B19-43F0-B55B-F4C8D3DC811B}.Release|AVR.ActiveCfg = Release|AVR
+		{C888D7E7-8B19-43F0-B55B-F4C8D3DC811B}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

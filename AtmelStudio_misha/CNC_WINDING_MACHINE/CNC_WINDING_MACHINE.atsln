@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "CNC_WINDING_MACHINE", "CNC_WINDING_MACHINE\CNC_WINDING_MACHINE.cppproj", "{383CCF60-052B-47A2-8DD1-0F34A02A7B34}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{383CCF60-052B-47A2-8DD1-0F34A02A7B34}.Debug|AVR.ActiveCfg = Debug|AVR
+		{383CCF60-052B-47A2-8DD1-0F34A02A7B34}.Debug|AVR.Build.0 = Debug|AVR
+		{383CCF60-052B-47A2-8DD1-0F34A02A7B34}.Release|AVR.ActiveCfg = Release|AVR
+		{383CCF60-052B-47A2-8DD1-0F34A02A7B34}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

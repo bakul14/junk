@@ -1,0 +1,140 @@
+
+pikpik11.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000062  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .comment      00000030  00000000  00000000  000000b6  2**0
+                  CONTENTS, READONLY
+  2 .debug_aranges 00000020  00000000  00000000  000000e6  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  3 .debug_info   000000b8  00000000  00000000  00000106  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_abbrev 0000007a  00000000  00000000  000001be  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_line   000000b1  00000000  00000000  00000238  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_frame  00000024  00000000  00000000  000002ec  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_str    0000014a  00000000  00000000  00000310  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_loc    0000006c  00000000  00000000  0000045a  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_ranges 00000010  00000000  00000000  000004c6  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	09 c0       	rjmp	.+18     	; 0x14 <__ctors_end>
+   2:	0e c0       	rjmp	.+28     	; 0x20 <__bad_interrupt>
+   4:	0d c0       	rjmp	.+26     	; 0x20 <__bad_interrupt>
+   6:	0c c0       	rjmp	.+24     	; 0x20 <__bad_interrupt>
+   8:	0b c0       	rjmp	.+22     	; 0x20 <__bad_interrupt>
+   a:	0a c0       	rjmp	.+20     	; 0x20 <__bad_interrupt>
+   c:	09 c0       	rjmp	.+18     	; 0x20 <__bad_interrupt>
+   e:	08 c0       	rjmp	.+16     	; 0x20 <__bad_interrupt>
+  10:	07 c0       	rjmp	.+14     	; 0x20 <__bad_interrupt>
+  12:	06 c0       	rjmp	.+12     	; 0x20 <__bad_interrupt>
+
+00000014 <__ctors_end>:
+  14:	11 24       	eor	r1, r1
+  16:	1f be       	out	0x3f, r1	; 63
+  18:	cf e9       	ldi	r28, 0x9F	; 159
+  1a:	cd bf       	out	0x3d, r28	; 61
+  1c:	02 d0       	rcall	.+4      	; 0x22 <main>
+  1e:	1f c0       	rjmp	.+62     	; 0x5e <_exit>
+
+00000020 <__bad_interrupt>:
+  20:	ef cf       	rjmp	.-34     	; 0x0 <__vectors>
+
+00000022 <main>:
+
+#include <avr/io.h>
+
+int main(void)
+{
+	DDRB &= ~1<<1;
+  22:	87 b3       	in	r24, 0x17	; 23
+  24:	8c 7f       	andi	r24, 0xFC	; 252
+  26:	87 bb       	out	0x17, r24	; 23
+	DDRB |= 1<<3;
+  28:	bb 9a       	sbi	0x17, 3	; 23
+	
+	TCCR0A = 0;
+  2a:	1f bc       	out	0x2f, r1	; 47
+	TCCR0B = 0b00000100;
+  2c:	84 e0       	ldi	r24, 0x04	; 4
+  2e:	83 bf       	out	0x33, r24	; 51
+	
+	uint8_t a = 0;
+	bool flag = 1;
+  30:	81 e0       	ldi	r24, 0x01	; 1
+	DDRB |= 1<<3;
+	
+	TCCR0A = 0;
+	TCCR0B = 0b00000100;
+	
+	uint8_t a = 0;
+  32:	90 e0       	ldi	r25, 0x00	; 0
+		}
+		
+	   else if (!flag) {
+		   		  
+			a = TCNT0;
+			flag = 1;					   
+  34:	41 e0       	ldi	r20, 0x01	; 1
+	while(1)
+	{
+		if (PINB&(1 << 1)) {			
+			if (flag) {
+				TCNT0 = 0;
+				flag = 0;			
+  36:	30 e0       	ldi	r19, 0x00	; 0
+	uint8_t a = 0;
+	bool flag = 1;
+	
+	while(1)
+	{
+		if (PINB&(1 << 1)) {			
+  38:	b1 9b       	sbis	0x16, 1	; 22
+  3a:	05 c0       	rjmp	.+10     	; 0x46 <__SREG__+0x7>
+			if (flag) {
+  3c:	88 23       	and	r24, r24
+  3e:	39 f0       	breq	.+14     	; 0x4e <__SREG__+0xf>
+				TCNT0 = 0;
+  40:	12 be       	out	0x32, r1	; 50
+				flag = 0;			
+  42:	83 2f       	mov	r24, r19
+  44:	04 c0       	rjmp	.+8      	; 0x4e <__SREG__+0xf>
+			}
+		}
+		
+	   else if (!flag) {
+  46:	81 11       	cpse	r24, r1
+  48:	02 c0       	rjmp	.+4      	; 0x4e <__SREG__+0xf>
+		   		  
+			a = TCNT0;
+  4a:	92 b7       	in	r25, 0x32	; 50
+			flag = 1;					   
+  4c:	84 2f       	mov	r24, r20
+		   
+	   }
+		
+		if (a > 56) PORTB |= 1<<3;
+  4e:	99 33       	cpi	r25, 0x39	; 57
+  50:	10 f0       	brcs	.+4      	; 0x56 <__SREG__+0x17>
+  52:	c3 9a       	sbi	0x18, 3	; 24
+  54:	f1 cf       	rjmp	.-30     	; 0x38 <main+0x16>
+		else PORTB &= ~1<<3;
+  56:	28 b3       	in	r18, 0x18	; 24
+  58:	20 7f       	andi	r18, 0xF0	; 240
+  5a:	28 bb       	out	0x18, r18	; 24
+  5c:	ed cf       	rjmp	.-38     	; 0x38 <main+0x16>
+
+0000005e <_exit>:
+  5e:	f8 94       	cli
+
+00000060 <__stop_program>:
+  60:	ff cf       	rjmp	.-2      	; 0x60 <__stop_program>

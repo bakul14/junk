@@ -1,0 +1,158 @@
+
+tiktok.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000008e  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  000000e2  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  000000e2  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000114  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000020  00000000  00000000  00000150  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   00000523  00000000  00000000  00000170  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 000004a6  00000000  00000000  00000693  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   000001a4  00000000  00000000  00000b39  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000024  00000000  00000000  00000ce0  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    000002cf  00000000  00000000  00000d04  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    00000043  00000000  00000000  00000fd3  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000010  00000000  00000000  00001016  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	12 c0       	rjmp	.+36     	; 0x26 <__ctors_end>
+   2:	19 c0       	rjmp	.+50     	; 0x36 <__bad_interrupt>
+   4:	18 c0       	rjmp	.+48     	; 0x36 <__bad_interrupt>
+   6:	17 c0       	rjmp	.+46     	; 0x36 <__bad_interrupt>
+   8:	16 c0       	rjmp	.+44     	; 0x36 <__bad_interrupt>
+   a:	15 c0       	rjmp	.+42     	; 0x36 <__bad_interrupt>
+   c:	14 c0       	rjmp	.+40     	; 0x36 <__bad_interrupt>
+   e:	13 c0       	rjmp	.+38     	; 0x36 <__bad_interrupt>
+  10:	12 c0       	rjmp	.+36     	; 0x36 <__bad_interrupt>
+  12:	11 c0       	rjmp	.+34     	; 0x36 <__bad_interrupt>
+  14:	10 c0       	rjmp	.+32     	; 0x36 <__bad_interrupt>
+  16:	0f c0       	rjmp	.+30     	; 0x36 <__bad_interrupt>
+  18:	0e c0       	rjmp	.+28     	; 0x36 <__bad_interrupt>
+  1a:	0d c0       	rjmp	.+26     	; 0x36 <__bad_interrupt>
+  1c:	0c c0       	rjmp	.+24     	; 0x36 <__bad_interrupt>
+  1e:	0b c0       	rjmp	.+22     	; 0x36 <__bad_interrupt>
+  20:	0a c0       	rjmp	.+20     	; 0x36 <__bad_interrupt>
+  22:	09 c0       	rjmp	.+18     	; 0x36 <__bad_interrupt>
+  24:	08 c0       	rjmp	.+16     	; 0x36 <__bad_interrupt>
+
+00000026 <__ctors_end>:
+  26:	11 24       	eor	r1, r1
+  28:	1f be       	out	0x3f, r1	; 63
+  2a:	cf e5       	ldi	r28, 0x5F	; 95
+  2c:	d4 e0       	ldi	r29, 0x04	; 4
+  2e:	de bf       	out	0x3e, r29	; 62
+  30:	cd bf       	out	0x3d, r28	; 61
+  32:	02 d0       	rcall	.+4      	; 0x38 <main>
+  34:	2a c0       	rjmp	.+84     	; 0x8a <_exit>
+
+00000036 <__bad_interrupt>:
+  36:	e4 cf       	rjmp	.-56     	; 0x0 <__vectors>
+
+00000038 <main>:
+#include <avr/io.h>
+
+
+int main(void)
+{
+    DDRD |= 1<<0;
+  38:	88 9a       	sbi	0x11, 0	; 17
+	TCCR1B = 0b00000001;
+  3a:	81 e0       	ldi	r24, 0x01	; 1
+  3c:	8e bd       	out	0x2e, r24	; 46
+	PORTD |= 1<<0;
+  3e:	90 9a       	sbi	0x12, 0	; 18
+	TCNT1 = 0;
+  40:	1d bc       	out	0x2d, r1	; 45
+  42:	1c bc       	out	0x2c, r1	; 44
+		if (TCNT1 == 100 && flag == 0) {
+			PORTD &= 0<<0;
+			TCNT1 = 0;
+			flag = !flag;
+		}
+        if (TCNT1 == 400 && flag == 1) {
+  44:	40 e0       	ldi	r20, 0x00	; 0
+  46:	31 e0       	ldi	r19, 0x01	; 1
+  48:	24 2f       	mov	r18, r20
+	PORTD |= 1<<0;
+	TCNT1 = 0;
+	bool flag = 0;
+    while (1) 
+    {
+		if (TCNT1 == 100 && flag == 0) {
+  4a:	8c b5       	in	r24, 0x2c	; 44
+  4c:	9d b5       	in	r25, 0x2d	; 45
+  4e:	84 36       	cpi	r24, 0x64	; 100
+  50:	91 05       	cpc	r25, r1
+  52:	19 f4       	brne	.+6      	; 0x5a <__SREG__+0x1b>
+  54:	21 11       	cpse	r18, r1
+  56:	12 c0       	rjmp	.+36     	; 0x7c <__SREG__+0x3d>
+  58:	08 c0       	rjmp	.+16     	; 0x6a <__SREG__+0x2b>
+			PORTD &= 0<<0;
+			TCNT1 = 0;
+			flag = !flag;
+		}
+        if (TCNT1 == 400 && flag == 1) {
+  5a:	8c b5       	in	r24, 0x2c	; 44
+  5c:	9d b5       	in	r25, 0x2d	; 45
+  5e:	80 39       	cpi	r24, 0x90	; 144
+  60:	91 40       	sbci	r25, 0x01	; 1
+  62:	99 f7       	brne	.-26     	; 0x4a <__SREG__+0xb>
+  64:	22 23       	and	r18, r18
+  66:	89 f3       	breq	.-30     	; 0x4a <__SREG__+0xb>
+  68:	05 c0       	rjmp	.+10     	; 0x74 <__SREG__+0x35>
+	TCNT1 = 0;
+	bool flag = 0;
+    while (1) 
+    {
+		if (TCNT1 == 100 && flag == 0) {
+			PORTD &= 0<<0;
+  6a:	82 b3       	in	r24, 0x12	; 18
+  6c:	12 ba       	out	0x12, r1	; 18
+			TCNT1 = 0;
+  6e:	1d bc       	out	0x2d, r1	; 45
+  70:	1c bc       	out	0x2c, r1	; 44
+  72:	04 c0       	rjmp	.+8      	; 0x7c <__SREG__+0x3d>
+			flag = !flag;
+		}
+        if (TCNT1 == 400 && flag == 1) {
+			PORTD |= 1<<0;
+  74:	90 9a       	sbi	0x12, 0	; 18
+			TCNT1 = 0;
+  76:	1d bc       	out	0x2d, r1	; 45
+  78:	1c bc       	out	0x2c, r1	; 44
+  7a:	e6 cf       	rjmp	.-52     	; 0x48 <__SREG__+0x9>
+		if (TCNT1 == 100 && flag == 0) {
+			PORTD &= 0<<0;
+			TCNT1 = 0;
+			flag = !flag;
+		}
+        if (TCNT1 == 400 && flag == 1) {
+  7c:	8c b5       	in	r24, 0x2c	; 44
+  7e:	9d b5       	in	r25, 0x2d	; 45
+  80:	80 39       	cpi	r24, 0x90	; 144
+  82:	91 40       	sbci	r25, 0x01	; 1
+  84:	b9 f3       	breq	.-18     	; 0x74 <__SREG__+0x35>
+  86:	23 2f       	mov	r18, r19
+  88:	e0 cf       	rjmp	.-64     	; 0x4a <__SREG__+0xb>
+
+0000008a <_exit>:
+  8a:	f8 94       	cli
+
+0000008c <__stop_program>:
+  8c:	ff cf       	rjmp	.-2      	; 0x8c <__stop_program>

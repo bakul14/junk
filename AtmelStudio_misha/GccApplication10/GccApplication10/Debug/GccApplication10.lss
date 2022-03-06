@@ -1,0 +1,359 @@
+
+GccApplication10.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000015e  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  000001b2  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  000001b2  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000001e4  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000020  00000000  00000000  00000220  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   00000507  00000000  00000000  00000240  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 00000492  00000000  00000000  00000747  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   0000047a  00000000  00000000  00000bd9  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000024  00000000  00000000  00001054  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    000002d9  00000000  00000000  00001078  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_ranges 00000010  00000000  00000000  00001351  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	12 c0       	rjmp	.+36     	; 0x26 <__ctors_end>
+   2:	19 c0       	rjmp	.+50     	; 0x36 <__bad_interrupt>
+   4:	18 c0       	rjmp	.+48     	; 0x36 <__bad_interrupt>
+   6:	17 c0       	rjmp	.+46     	; 0x36 <__bad_interrupt>
+   8:	16 c0       	rjmp	.+44     	; 0x36 <__bad_interrupt>
+   a:	15 c0       	rjmp	.+42     	; 0x36 <__bad_interrupt>
+   c:	14 c0       	rjmp	.+40     	; 0x36 <__bad_interrupt>
+   e:	13 c0       	rjmp	.+38     	; 0x36 <__bad_interrupt>
+  10:	12 c0       	rjmp	.+36     	; 0x36 <__bad_interrupt>
+  12:	11 c0       	rjmp	.+34     	; 0x36 <__bad_interrupt>
+  14:	10 c0       	rjmp	.+32     	; 0x36 <__bad_interrupt>
+  16:	0f c0       	rjmp	.+30     	; 0x36 <__bad_interrupt>
+  18:	0e c0       	rjmp	.+28     	; 0x36 <__bad_interrupt>
+  1a:	0d c0       	rjmp	.+26     	; 0x36 <__bad_interrupt>
+  1c:	0c c0       	rjmp	.+24     	; 0x36 <__bad_interrupt>
+  1e:	0b c0       	rjmp	.+22     	; 0x36 <__bad_interrupt>
+  20:	0a c0       	rjmp	.+20     	; 0x36 <__bad_interrupt>
+  22:	09 c0       	rjmp	.+18     	; 0x36 <__bad_interrupt>
+  24:	08 c0       	rjmp	.+16     	; 0x36 <__bad_interrupt>
+
+00000026 <__ctors_end>:
+  26:	11 24       	eor	r1, r1
+  28:	1f be       	out	0x3f, r1	; 63
+  2a:	cf e5       	ldi	r28, 0x5F	; 95
+  2c:	d4 e0       	ldi	r29, 0x04	; 4
+  2e:	de bf       	out	0x3e, r29	; 62
+  30:	cd bf       	out	0x3d, r28	; 61
+  32:	02 d0       	rcall	.+4      	; 0x38 <main>
+  34:	92 c0       	rjmp	.+292    	; 0x15a <_exit>
+
+00000036 <__bad_interrupt>:
+  36:	e4 cf       	rjmp	.-56     	; 0x0 <__vectors>
+
+00000038 <main>:
+#include <avr/io.h>
+
+
+int main(void)
+{
+	DDRD = 0xff;
+  38:	8f ef       	ldi	r24, 0xFF	; 255
+  3a:	81 bb       	out	0x11, r24	; 17
+	TCNT0 = 0b00011101;
+  3c:	9d e1       	ldi	r25, 0x1D	; 29
+  3e:	92 bf       	out	0x32, r25	; 50
+	TIMSK |= 1<<0;
+  40:	99 b7       	in	r25, 0x39	; 57
+  42:	91 60       	ori	r25, 0x01	; 1
+  44:	99 bf       	out	0x39, r25	; 57
+	SREG |= 1<<7;
+  46:	9f b7       	in	r25, 0x3f	; 63
+  48:	90 68       	ori	r25, 0x80	; 128
+  4a:	9f bf       	out	0x3f, r25	; 63
+	PORTD = 0;
+  4c:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  4e:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  50:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  52:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  54:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  56:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  58:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  5a:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  5c:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  5e:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  60:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  62:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  64:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  66:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  68:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  6a:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  6c:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  6e:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  70:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  72:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  74:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  76:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  78:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  7a:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  7c:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  7e:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  80:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  82:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  84:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  86:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  88:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  8a:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  8c:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  8e:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  90:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  92:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  94:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  96:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  98:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  9a:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  9c:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  9e:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  a0:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  a2:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  a4:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  a6:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  a8:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  aa:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  ac:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  ae:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  b0:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  b2:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  b4:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  b6:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  b8:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  ba:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  bc:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  be:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  c0:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  c2:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  c4:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  c6:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  c8:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  ca:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  cc:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  ce:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  d0:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  d2:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  d4:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  d6:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  d8:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  da:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  dc:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  de:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  e0:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  e2:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  e4:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  e6:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  e8:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  ea:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  ec:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  ee:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  f0:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  f2:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  f4:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  f6:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  f8:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  fa:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+  fc:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+  fe:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+ 100:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+ 102:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+ 104:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+ 106:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+ 108:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+ 10a:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+ 10c:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+ 10e:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+ 110:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+ 112:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+ 114:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+ 116:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+ 118:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+ 11a:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+ 11c:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+ 11e:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+ 120:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+ 122:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+ 124:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+ 126:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+ 128:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+ 12a:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+ 12c:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+ 12e:	82 bb       	out	0x12, r24	; 18
+	
+	PORTD = 0;
+ 130:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+ 132:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+ 134:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+ 136:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+ 138:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+ 13a:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+ 13c:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+ 13e:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+ 140:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+ 142:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+ 144:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+ 146:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+ 148:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+ 14a:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+ 14c:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+ 14e:	82 bb       	out	0x12, r24	; 18
+	PORTD = 0;
+ 150:	12 ba       	out	0x12, r1	; 18
+	PORTD = 255;
+ 152:	82 bb       	out	0x12, r24	; 18
+}
+ 154:	80 e0       	ldi	r24, 0x00	; 0
+ 156:	90 e0       	ldi	r25, 0x00	; 0
+ 158:	08 95       	ret
+
+0000015a <_exit>:
+ 15a:	f8 94       	cli
+
+0000015c <__stop_program>:
+ 15c:	ff cf       	rjmp	.-2      	; 0x15c <__stop_program>
